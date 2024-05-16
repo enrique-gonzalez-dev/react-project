@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 const ItemList = ({ item }) => {
-
   return (
     <Link to={`/item/${item.id}`}>
       <div key={item.id} className="bg-white p-4 shadow-md">

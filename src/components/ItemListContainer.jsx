@@ -1,30 +1,22 @@
 import { useEffect, useState } from "react";
 import ItemList from "./ItemList";
 import { useParams } from "react-router-dom";
+import { getItems, getItemsByCategory } from "../utils";
 
 const ItemListContainer = () => {
   const [items, setItems] = useState([]);
   const { categoryId } = useParams();
 
   useEffect(() => {
-    fetch("/src/assets/data.json")
-      .then((response) => {
-        return response.json();
-      })
-      .then((jsonData) => {
-        const {
-          boxing_store: { products },
-        } = jsonData;
-        if (categoryId) {
-          const filteredProducts = products.filter(
-            (product) =>
-              product.category.toLowerCase() === categoryId.toLowerCase()
-          );
-          setItems(filteredProducts);
-          return;
-        }
-        setItems(products);
+    if (categoryId) {
+      getItemsByCategory(categoryId).then((items) => {
+        setItems(items);
       });
+    } else {
+      getItems().then((items) => {
+        setItems(items);
+      });
+    }
   }, [categoryId]);
 
   return (
